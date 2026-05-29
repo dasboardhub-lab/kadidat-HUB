@@ -3,507 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perbandingan Kandidat Hub</title>
+    <title>Data Komprehensif Kandidat Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9; /* slate-100 */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
         }
-        
-        /* Custom Scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        .table-row-hover:hover td {
+            background-color: #fafafa;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f8fafc; 
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
             background: #cbd5e1; 
             border-radius: 4px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; 
-        }
-
-        /* Sticky Table Configuration */
-        .sticky-corner {
-            position: sticky;
-            top: 0;
-            left: 0;
-            z-index: 50;
-            background-color: #f8fafc; /* slate-50 */
-        }
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            background-color: #f8fafc; /* slate-50 */
         }
         .sticky-col {
             position: sticky;
             left: 0;
-            z-index: 30;
-            background-color: #ffffff;
+            z-index: 10;
         }
-        
-        /* Box Shadows for Sticky Elements to act as borders */
-        .shadow-right { box-shadow: inset -1px 0 0 0 #e2e8f0; }
-        .shadow-bottom { box-shadow: inset 0 -1px 0 0 #e2e8f0; }
-        .shadow-corner { box-shadow: inset -1px -1px 0 0 #e2e8f0; }
-        
-        /* Hover effects */
-        .table-row-hover:hover td {
-            background-color: #f8fafc !important; /* slate-50 */
-            transition: background-color 0.15s ease;
+        .shadow-right {
+            box-shadow: inset -4px 0 6px -4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<body class="p-2 md:p-6 lg:p-8 h-screen w-full flex items-center justify-center overflow-hidden">
+<body class="text-slate-800 p-2 md:p-6 min-h-screen">
 
-    <!-- Main Application Container -->
-    <div class="w-full max-w-[1300px] h-full max-h-[95vh] bg-white rounded-xl md:rounded-2xl shadow-xl border border-slate-200 flex flex-col overflow-hidden">
+    <div class="max-w-[1600px] w-full mx-auto bg-white rounded-2xl md:rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden flex flex-col">
         
-        <!-- App Header (Fixed) -->
-        <div class="p-4 md:p-5 bg-white border-b border-slate-200 shrink-0 flex items-center justify-between z-10 relative">
-            <div class="flex items-center space-x-3">
-                <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg md:rounded-xl ring-1 ring-indigo-100">
-                    <i data-lucide="building-2" class="w-5 h-5 md:w-6 md:h-6"></i>
+        <!-- Header Section -->
+        <div class="p-6 md:px-10 md:py-8 bg-white relative z-10 border-b border-slate-200">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-50 to-white -z-10"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 md:p-4 bg-indigo-50 text-indigo-600 rounded-xl md:rounded-2xl ring-1 ring-inset ring-indigo-100">
+                        <i data-lucide="building-2" class="w-6 h-6 md:w-8 md:h-8"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">Perbandingan Hub Balikpapan</h1>
+                        <p class="text-sm md:text-base text-slate-500 font-medium mt-1">Rekapitulasi 4 Kandidat Fasilitas Operasional</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="text-lg md:text-xl font-bold text-slate-900 tracking-tight leading-tight">Perbandingan Hub Balikpapan</h1>
-                    <p class="text-xs md:text-sm text-slate-500 font-medium">Rekapitulasi skoring fasilitas logistik</p>
-                </div>
-            </div>
-            <div class="hidden md:flex items-center space-x-1.5 text-xs font-medium text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
-                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
-                <span>Data Lapangan Terkini</span>
             </div>
         </div>
 
-        <!-- Scrollable Table Viewport -->
-        <div class="flex-1 overflow-auto custom-scrollbar bg-white relative">
-            <table class="w-full text-left border-collapse min-w-[800px] md:min-w-[1000px] text-[13px] md:text-sm">
-                
-                <!-- Table Headers (Sticky Top) -->
-                <thead>
+        <!-- Table Section -->
+        <div class="overflow-x-auto relative z-0">
+            <table class="w-full text-left border-collapse min-w-[1300px]">
+                <thead class="glass-header sticky top-0 z-20 shadow-sm border-b border-slate-200">
                     <tr>
-                        <th class="sticky-corner shadow-corner p-3 md:p-4 align-bottom w-[25%]">
-                            <span class="block font-bold text-slate-400 uppercase tracking-widest text-[10px] md:text-xs">Kriteria Penilaian</span>
+                        <th class="sticky-col shadow-right p-4 md:p-6 font-bold text-slate-400 uppercase tracking-widest text-[10px] md:text-xs w-[18%] align-bottom bg-white">
+                            Kriteria Penilaian
                         </th>
-                        <th class="sticky-header shadow-bottom p-3 md:p-4 border-l border-slate-200 w-[25%]">
-                            <div class="bg-white rounded-lg p-3 border border-slate-200 shadow-sm text-center">
-                                <span class="block text-base md:text-lg font-black text-slate-800">HUB BPP 01</span>
-                                <span class="block text-[11px] md:text-xs font-medium text-slate-500 mt-0.5">Jl. Siaga No. 116</span>
+                        <th class="p-4 md:p-6 w-[20.5%] border-l border-slate-100">
+                            <div class="bg-white rounded-xl md:rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm text-center ring-1 ring-slate-900/5 hover:shadow-md transition-shadow">
+                                <span class="block text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">HUB BPP 01</span>
+                                <span class="block text-[10px] md:text-xs font-medium text-slate-500 mt-1 md:mt-2 truncate">Jl. Siaga No. 116</span>
                             </div>
                         </th>
-                        <th class="sticky-header shadow-bottom p-3 md:p-4 border-l border-slate-200 w-[25%]">
-                            <div class="bg-white rounded-lg p-3 border border-slate-200 shadow-sm text-center">
-                                <span class="block text-base md:text-lg font-black text-slate-800">HUB BPP 02</span>
-                                <span class="block text-[11px] md:text-xs font-medium text-slate-500 mt-0.5">Jl. M. Sutoyo No. 9</span>
+                        <th class="p-4 md:p-6 w-[20.5%] border-l border-slate-100">
+                            <div class="bg-white rounded-xl md:rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm text-center ring-1 ring-slate-900/5 hover:shadow-md transition-shadow">
+                                <span class="block text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">HUB BPP 02</span>
+                                <span class="block text-[10px] md:text-xs font-medium text-slate-500 mt-1 md:mt-2 truncate">Jl. Mayjend Sutoyo No. 9</span>
                             </div>
                         </th>
-                        <th class="sticky-header shadow-bottom p-3 md:p-4 border-l border-slate-200 w-[25%]">
-                            <div class="bg-white rounded-lg p-3 border-emerald-200 ring-1 ring-emerald-50 shadow-sm text-center bg-emerald-50/20">
-                                <span class="block text-base md:text-lg font-black text-slate-800">HUB BPP 03</span>
-                                <span class="block text-[11px] md:text-xs font-medium text-slate-500 mt-0.5">Jl. Syarifuddin Yoes 18</span>
+                        <th class="p-4 md:p-6 w-[20.5%] border-l border-slate-100">
+                            <div class="bg-white rounded-xl md:rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm text-center ring-1 ring-slate-900/5 hover:shadow-md transition-shadow">
+                                <span class="block text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">HUB BPP 03</span>
+                                <span class="block text-[10px] md:text-xs font-medium text-slate-500 mt-1 md:mt-2 truncate">Jl. Syarifuddin Yoes 18</span>
+                            </div>
+                        </th>
+                        <th class="p-4 md:p-6 w-[20.5%] border-l border-slate-100">
+                            <div class="bg-emerald-50 rounded-xl md:rounded-2xl p-4 md:p-5 border border-emerald-100 shadow-sm text-center ring-1 ring-emerald-900/5 relative overflow-hidden hover:shadow-md transition-shadow">
+                                <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] md:text-[10px] font-bold px-2 py-1 rounded-bl-lg uppercase tracking-wider">Baru</div>
+                                <span class="block text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-800 to-emerald-600">HUB BPP 04</span>
+                                <span class="block text-[10px] md:text-xs font-medium text-emerald-700 mt-1 md:mt-2 truncate">Jl. Indrakila 8-107</span>
                             </div>
                         </th>
                     </tr>
                 </thead>
-
-                <!-- Table Body -->
-                <tbody class="text-slate-700 divide-y divide-slate-100">
+                <tbody class="text-[13px] md:text-sm text-slate-700 divide-y divide-slate-100">
                     
-                    <!-- Kategori 1: Finansial & Luas -->
-                    <tr class="bg-slate-100/70">
-                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase">
-                            <div class="flex items-center"><i data-lucide="wallet" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Finansial & Luas Area</div>
+                    <tr class="bg-slate-50/50">
+                        <td colspan="5" class="px-4 md:px-6 py-3 md:py-4 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase">
+                            <div class="flex items-center"><i data-lucide="wallet" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 text-indigo-500"></i> Finansial & Luas Area</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="banknote" class="w-4 h-4 mr-2.5 text-slate-400"></i> Harga Sewa / Tahun</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-slate-900 bg-white">Rp 120 Juta</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-slate-900 bg-white">Rp 125 Juta</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-slate-900 bg-white">Rp 185 Juta</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="banknote" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Harga Sewa / Tahun</td>
+                        <td class="p-3 md:p-6 font-bold text-sm md:text-lg border-l border-slate-100 text-slate-900 bg-white">Rp 120 Juta</td>
+                        <td class="p-3 md:p-6 font-bold text-sm md:text-lg border-l border-slate-100 text-slate-900 bg-white">Rp 125 Juta</td>
+                        <td class="p-3 md:p-6 font-bold text-sm md:text-lg border-l border-slate-100 text-slate-900 bg-white">Rp 185 Juta</td>
+                        <td class="p-3 md:p-6 font-bold text-sm md:text-lg border-l border-slate-100 text-emerald-700 bg-emerald-50/30">Rp 225 Juta</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="maximize" class="w-4 h-4 mr-2.5 text-slate-400"></i> Luas Area Operasional</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">116 m²</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">204 m²</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">152 m²</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="maximize" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Luas Area Operasional</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-white">116 m²</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">204 m²</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-white">152 m²</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-emerald-50/30">162 m²</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="car" class="w-4 h-4 mr-2.5 text-slate-400"></i> Luas Parkiran</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">36 m²</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-rose-600 bg-rose-50/30">0 m²</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">95 m²</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="car" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Luas Parkiran</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-white">36 m²</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium text-rose-600 bg-rose-50/30">0 m²</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-white">95 m²</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-bold text-emerald-700 bg-emerald-50/50">171 m²</td>
                     </tr>
 
-                    <!-- Kategori 2: Akses & Operasional -->
-                    <tr class="bg-slate-100/70">
-                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="route" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Akses & Logistik</div>
+                    <tr class="bg-slate-50/50">
+                        <td colspan="5" class="px-4 md:px-6 py-3 md:py-4 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="route" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 text-indigo-500"></i> Akses & Operasional Logistik</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="map" class="w-4 h-4 mr-2.5 text-slate-400"></i> Akses Jalan Depan</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1 gang dari jln utama</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1 gang dari jln utama</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-semibold text-slate-900 bg-white">Jln utama dekat tol</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="map" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Akses Jalan Depan</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">1 gang dari jalan utama</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">1 gang dari jalan utama</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">Jalan utama dekat tol (< 5min)</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-emerald-50/30">Jalan utama</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="truck" class="w-4 h-4 mr-2.5 text-slate-400"></i> Kapasitas Armada</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">< 10 CDE</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 text-rose-600 font-medium bg-white">0 (Tidak ada)</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 10 CDE</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="truck" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Kapasitas Parkir Armada</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">< 10 CDE</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 text-rose-600 font-medium bg-white">Tidak ada (0)</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 10 CDE</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-emerald-50/30">> 10 CDE</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="box" class="w-4 h-4 mr-2.5 text-slate-400"></i> Loading/Unloading</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1-2 gate mobil</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1-2 gate mobil</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 2 gate & docking</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="box" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Area Bongkar Muat</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">1-2 gate untuk mobil</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">1-2 gate untuk mobil</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 2 gates & docking</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-emerald-50/30">> 2 gates & docking</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="arrow-left-right" class="w-4 h-4 mr-2.5 text-slate-400"></i> Akses Area & Bangunan</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">4,5 meter ke bangunan</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">> 8m Area, > 2m Pintu</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">> 8m Area, > 2m Pintu</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="arrow-left-right" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Akses ke Bangunan</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-white">4,5 meter ke bangunan</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 8 Meter</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 8 Meter</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-emerald-50/30">> 8 Meter</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="clock" class="w-4 h-4 mr-2.5 text-slate-400"></i> Jam Operasional</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">24 Jam (Bebas)</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">24 Jam (Bebas)</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">24 Jam (Bebas)</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="door-open" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Lebar Akses Pintu</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 text-rose-600 font-medium bg-white">70-90 cm (pintu rumah)</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 2 Meter</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 2 Meter</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-slate-900 bg-emerald-50/30">> 2 Meter</td>
+                    </tr>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="clock" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Jam Operasional</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-white">24 Jam Bebas</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-white">24 Jam Bebas</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-white">24 Jam Bebas</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-emerald-50/30">24 Jam Bebas</td>
                     </tr>
 
-                    <!-- Kategori 3: Fasilitas & Fisik -->
-                    <tr class="bg-slate-100/70">
-                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="home" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Fasilitas Fisik</div>
+                    <tr class="bg-slate-50/50">
+                        <td colspan="5" class="px-4 md:px-6 py-3 md:py-4 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="home" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 text-indigo-500"></i> Fasilitas & Kondisi Fisik</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="layout-grid" class="w-4 h-4 mr-2.5 text-slate-400"></i> Jenis & Sekat Bangunan</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Ruko <span class="text-amber-500 font-medium block">Minim Sekat</span></td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Gudang <span class="text-emerald-500 font-medium block">Tanpa Sekat</span></td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Ruko <span class="text-amber-500 font-medium block">Minim Sekat</span></td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="layout-grid" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Jenis & Sekat</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">Ruko <br><span class="text-amber-500 text-[10px] md:text-xs font-semibold mt-1 block">Minim Sekat</span></td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">Gudang <br><span class="text-emerald-600 text-[10px] md:text-xs font-semibold mt-1 block">Tanpa Sekat</span></td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">Ruko <br><span class="text-amber-500 text-[10px] md:text-xs font-semibold mt-1 block">Minim Sekat</span></td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-emerald-50/30">Ruko <br><span class="text-amber-500 text-[10px] md:text-xs font-semibold mt-1 block">Minim Sekat</span></td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="hammer" class="w-4 h-4 mr-2.5 text-slate-400"></i> Kebutuhan Renovasi</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="hammer" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Status Kelayakan</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">
+                            <span class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20">Renovasi Besar</span>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">
+                            <span class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20">Renovasi Besar</span>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">
+                            <span class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
+                        </td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-emerald-50/30">
+                            <span class="inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
                         </td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="zap" class="w-4 h-4 mr-2.5 text-slate-400"></i> Listrik & Air</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Pasang Baru (Listrik)<br><span class="text-slate-500 text-[11px]">PDAM Sharing</span></td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1.300 Watt<br><span class="text-slate-500 text-[11px]">PDAM Sharing</span></td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">5.500 Watt<br><span class="text-slate-500 text-[11px]">Mandiri</span></td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="zap" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Listrik</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 text-rose-600 font-medium bg-white">Pasang Baru (gabung)</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-medium bg-white">1.300 Watt</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-bold text-indigo-600 bg-white">5.500 Watt</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-bold text-indigo-600 bg-emerald-50/30">5.500 Watt</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="bath" class="w-4 h-4 mr-2.5 text-slate-400"></i> Kondisi Toilet</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">Kondisi Baik</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 text-rose-600 font-medium bg-white">Rusak (Perlu Perbaikan)</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">Kondisi Baik</td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="droplet" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Sumber Air</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">Sharing lantai 2</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">Sharing toko sebelah</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-white">Mandiri</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-emerald-50/30">Mandiri</td>
                     </tr>
-                    <tr class="table-row-hover group">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="shield-alert" class="w-4 h-4 mr-2.5 text-slate-400"></i> Eksternal (Ormas/Banjir)</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Bebas Banjir, <span class="text-amber-600 font-medium">Ormas Tentatif</span></td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Bebas Banjir, <span class="text-amber-600 font-medium">Ormas Tentatif</span></td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Bebas Banjir, <span class="text-amber-600 font-medium">Ormas Tentatif</span></td>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="bath" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Toilet</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-white">Kondisi Baik</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 text-rose-600 font-medium bg-white">Rusak Parah</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-white">Kondisi Baik</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 font-semibold text-emerald-600 bg-emerald-50/30">Kondisi Baik</td>
+                    </tr>
+                    <tr class="table-row-hover transition-colors group">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors bg-white"><i data-lucide="shield-alert" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 md:mr-3 text-slate-400"></i> Risiko Eksternal</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 space-y-1 md:space-y-2 bg-white">
+                            <div class="flex items-center text-emerald-600 text-[10px] md:text-xs font-bold"><i data-lucide="check-circle-2" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Bebas Banjir</div>
+                            <div class="flex items-center text-amber-600 text-[10px] md:text-xs font-bold"><i data-lucide="alert-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Ormas Tentatif</div>
+                        </td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 space-y-1 md:space-y-2 bg-white">
+                            <div class="flex items-center text-emerald-600 text-[10px] md:text-xs font-bold"><i data-lucide="check-circle-2" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Bebas Banjir</div>
+                            <div class="flex items-center text-amber-600 text-[10px] md:text-xs font-bold"><i data-lucide="alert-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Ormas Tentatif</div>
+                        </td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 space-y-1 md:space-y-2 bg-white">
+                            <div class="flex items-center text-emerald-600 text-[10px] md:text-xs font-bold"><i data-lucide="check-circle-2" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Bebas Banjir</div>
+                            <div class="flex items-center text-amber-600 text-[10px] md:text-xs font-bold"><i data-lucide="alert-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Ormas Tentatif</div>
+                        </td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 space-y-1 md:space-y-2 bg-emerald-50/30">
+                            <div class="flex items-center text-emerald-600 text-[10px] md:text-xs font-bold"><i data-lucide="check-circle-2" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Bebas Banjir</div>
+                            <div class="flex items-center text-amber-600 text-[10px] md:text-xs font-bold"><i data-lucide="alert-circle" class="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5"></i> Ormas Tentatif</div>
+                        </td>
                     </tr>
 
-                    <!-- Kategori 4: Catatan Khusus -->
-                    <tr class="bg-slate-100/70">
-                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="file-text" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Catatan Observasi</div>
+                    <tr class="bg-slate-50/50">
+                        <td colspan="5" class="px-4 md:px-6 py-3 md:py-4 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="file-text" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 text-indigo-500"></i> Catatan Khusus Lapangan</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover align-top bg-white">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 bg-white">Hasil Survey Lapangan</td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <ul class="space-y-2.5 text-[12px] text-slate-600">
-                                <li class="flex items-start"><i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-500 mt-0.5 mr-2 shrink-0"></i>Area parkir terlalu tinggi, butuh pembobokan.</li>
-                                <li class="flex items-start"><i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-500 mt-0.5 mr-2 shrink-0"></i>Sulit digabung dgn SS GNBH.</li>
-                                <li class="flex items-start text-rose-600 font-medium"><i data-lucide="ban" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Unit ASTA tidak bisa parkir.</li>
+                    <tr class="table-row-hover align-top transition-colors bg-white">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 bg-white">Hasil Observasi</td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">
+                            <ul class="space-y-3 text-[11px] md:text-sm">
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-amber-100 text-amber-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="pickaxe" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed">Parkir tinggi, butuh bobok unit (owner jika deal).</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-amber-100 text-amber-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="git-merge" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed">Sulit gabung SS GNBH (selisih 2m).</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-rose-100 text-rose-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="ban" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed font-medium">Unit ASTA tidak bisa parkir.</span>
+                                </li>
                             </ul>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <ul class="space-y-2.5 text-[12px] text-slate-600">
-                                <li class="flex items-start"><i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-500 mt-0.5 mr-2 shrink-0"></i>Ada atap bocor & butuh penyesuaian alur loading.</li>
-                                <li class="flex items-start text-emerald-600 font-medium"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Bisa digabungkan dgn SS GNBH.</li>
-                                <li class="flex items-start text-rose-600 font-medium"><i data-lucide="ban" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Unit ASTA tidak bisa parkir.</li>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">
+                            <ul class="space-y-3 text-[11px] md:text-sm">
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-amber-100 text-amber-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="droplet" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed">Atap bocor & penyesuaian besar alur loading.</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-emerald-100 text-emerald-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="check" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed font-medium">Bisa digabungkan SS GNBH.</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-rose-100 text-rose-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="ban" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed font-medium">Unit ASTA tidak bisa parkir.</span>
+                                </li>
                             </ul>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <ul class="space-y-2.5 text-[12px] text-slate-600">
-                                <li class="flex items-start text-emerald-600 font-medium"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Sangat ideal digabung dgn SS GNBHO.</li>
-                                <li class="flex items-start"><i data-lucide="info" class="w-3.5 h-3.5 text-blue-500 mt-0.5 mr-2 shrink-0"></i>Lantai 3 adalah kos-kosan, namun akses pintu terpisah di luar area.</li>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-white">
+                            <ul class="space-y-3 text-[11px] md:text-sm">
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-emerald-100 text-emerald-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="check" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed font-medium">Sangat ideal digabung SS GNBHO.</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-indigo-100 text-indigo-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i class="w-3 h-3 md:w-3.5 md:h-3.5" data-lucide="info"></i></div>
+                                    <span class="leading-relaxed">Lantai 3 kos-kosan (pintu terpisah).</span>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="p-3 md:p-6 border-l border-slate-100 bg-emerald-50/30">
+                            <ul class="space-y-3 text-[11px] md:text-sm">
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-emerald-100 text-emerald-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="check" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed">Akses mudah kontainer 20ft. Cocok bengkel & gudang.</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-emerald-100 text-emerald-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i data-lucide="check" class="w-3 h-3 md:w-3.5 md:h-3.5"></i></div>
+                                    <span class="leading-relaxed">Parkiran muat 5 kendaraan (termasuk bongkar muat).</span>
+                                </li>
+                                <li class="flex items-start text-slate-600">
+                                    <div class="bg-indigo-100 text-indigo-600 p-1 rounded mt-0.5 mr-2 shrink-0"><i class="w-3 h-3 md:w-3.5 md:h-3.5" data-lucide="info"></i></div>
+                                    <span class="leading-relaxed">Ada Basement (72 m²). Lantai 2 (189 m²), Lt 3 (189 m²).</span>
+                                </li>
                             </ul>
                         </td>
                     </tr>
 
-                    <!-- Kategori 5: Dokumentasi Foto -->
-                    <tr class="bg-slate-100/70">
-                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="image" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Dokumentasi Lapangan</div>
+                    <tr class="bg-slate-50/50">
+                        <td colspan="5" class="px-4 md:px-6 py-3 md:py-4 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="image" class="w-3.5 h-3.5 md:w-4 md:h-4 mr-2 text-indigo-500"></i> Dokumentasi Lapangan</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover align-top bg-white">
-                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 bg-white">
-                            <div class="flex items-center"><i data-lucide="camera" class="w-4 h-4 mr-2.5 text-slate-400"></i> Lampiran Foto</div>
-                            <span class="block text-[10px] text-slate-400 mt-1.5 font-normal leading-relaxed">*Klik thumbnail untuk memperbesar gambar.</span>
+                    <tr class="table-row-hover align-top transition-colors bg-white">
+                        <td class="sticky-col shadow-right p-3 md:p-6 font-medium text-slate-500 bg-white">
+                            <div class="flex items-center"><i data-lucide="camera" class="w-4 h-4 mr-3 text-slate-400"></i> Lampiran Foto</div>
+                            <span class="block text-[10px] md:text-xs text-slate-400 mt-2 font-normal leading-relaxed">*Klik thumbnail untuk memperbesar.</span>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <div class="grid grid-cols-2 gap-2">
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/6cCW76d4/Whats-App-Image-2026-05-08-at-22-46-42-1.jpg" alt="Foto 1" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/sJcpW1tG/Whats-App-Image-2026-05-08-at-22-46-42.jpg" alt="Foto 2" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/8LjFT5fL/Whats-App-Image-2026-05-08-at-22-46-41.jpg" alt="Foto 3" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/QFFTY1MR/Whats-App-Image-2026-05-14-at-15-38-21.jpg" alt="Foto 4" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/wrY6wXN7/Whats-App-Image-2026-05-14-at-15-38-20-1.jpg" alt="Foto 5" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/rGb2rLkZ/Whats-App-Image-2026-05-14-at-15-38-20.jpg" alt="Foto 6" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                        
+                        <!-- BPP 01 Photos -->
+                        <td class="p-4 md:p-6 border-l border-slate-100 bg-white">
+                            <div class="grid grid-cols-2 gap-2 md:gap-3">
                                 <div onclick="openLightbox(this)" class="cursor-pointer col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-[21/9] bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/VW6bLRLN/Whats-App-Image-2026-05-14-at-15-38-19.jpg" alt="Foto 7" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/6cCW76d4/Whats-App-Image-2026-05-08-at-22-46-42-1.jpg" alt="Foto BPP 01 - 1" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
+                                    </div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/sJcpW1tG/Whats-App-Image-2026-05-08-at-22-46-42.jpg" alt="Foto BPP 01 - 2" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
+                                    </div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/8LjFT5fL/Whats-App-Image-2026-05-08-at-22-46-41.jpg" alt="Foto BPP 01 - 3" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
+                                    </div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/QFFTY1MR/Whats-App-Image-2026-05-14-at-15-38-21.jpg" alt="Foto BPP 01 - 4" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
+                                    </div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/wrY6wXN7/Whats-App-Image-2026-05-14-at-15-38-20-1.jpg" alt="Foto BPP 01 - 5" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
+                                    </div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/rGb2rLkZ/Whats-App-Image-2026-05-14-at-15-38-20.jpg" alt="Foto BPP 01 - 6" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
+                                    </div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
+                                        <img src="https://i.ibb.co.com/VW6bLRLN/Whats-App-Image-2026-05-14-at-15-38-19.jpg" alt="Foto BPP 01 - 7" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <div class="grid grid-cols-2 gap-2">
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+
+                        <!-- BPP 02 Photos -->
+                        <td class="p-4 md:p-6 border-l border-slate-100 bg-white">
+                            <div class="grid grid-cols-2 gap-2 md:gap-3">
+                                <div onclick="openLightbox(this)" class="cursor-pointer col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
                                     <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
                                         <img src="https://i.ibb.co.com/zWxDsLKC/Whats-App-Image-2026-05-14-at-17-38-50.jpg" alt="Foto BPP 02 - 1" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
                                     </div>
                                 </div>
                                 <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
                                         <img src="https://i.ibb.co.com/tjVwPbQ/Whats-App-Image-2026-05-14-at-17-38-56.jpg" alt="Foto BPP 02 - 2" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
                                     </div>
                                 </div>
                                 <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
                                         <img src="https://i.ibb.co.com/qM5NHtZ0/Whats-App-Image-2026-05-14-at-17-38-55.jpg" alt="Foto BPP 02 - 3" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
                                     </div>
                                 </div>
                                 <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
                                         <img src="https://i.ibb.co.com/JwQZQHdh/crop-1778747925902-watermarked.webp" alt="Foto BPP 02 - 4" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
                                     </div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-[21/9] bg-slate-50 flex items-center justify-center">
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-square bg-slate-50 flex items-center justify-center">
                                         <img src="https://i.ibb.co.com/yFn7t3tS/Whats-App-Image-2026-05-29-at-13-14-35.jpg" alt="Foto BPP 02 - 5" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
+                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
-                            <div class="grid grid-cols-2 gap-2">
-                                <!-- Label Kategori: Parkiran -->
-                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-slate-500 uppercase bg-slate-50 p-1.5 rounded border border-slate-100 text-center mb-0.5">Area Parkiran</div>
+
+                        <!-- BPP 03 Photos -->
+                        <td class="p-4 md:p-6 border-l border-slate-100 bg-white">
+                            <div class="grid grid-cols-2 gap-2 md:gap-3">
                                 
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/gFmqqcVw/Whats-App-Image-2026-05-16-at-07-08-58.jpg" alt="BPP 03 Parkiran 1" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-slate-400 uppercase border-b border-slate-100 pb-1 mb-1">Parkiran</div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/gFmqqcVw/Whats-App-Image-2026-05-16-at-07-08-58.jpg" alt="BPP 03 Parkir 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/rKnGXJ6T/Whats-App-Image-2026-05-16-at-07-08-59.jpg" alt="BPP 03 Parkiran 2" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/rKnGXJ6T/Whats-App-Image-2026-05-16-at-07-08-59.jpg" alt="BPP 03 Parkir 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
 
-                                <!-- Label Kategori: Lantai 1 -->
-                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-slate-500 uppercase bg-slate-50 p-1.5 rounded border border-slate-100 text-center mt-1 mb-0.5">Area Lantai 1</div>
-
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/JRckYBqR/Whats-App-Image-2026-05-16-at-07-09-22.jpg" alt="BPP 03 Lantai 1 - 1" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-slate-400 uppercase border-b border-slate-100 pb-1 mt-2 mb-1">Lantai 1</div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/JRckYBqR/Whats-App-Image-2026-05-16-at-07-09-22.jpg" alt="BPP 03 Lt1 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/Y7GztMdb/Whats-App-Image-2026-05-16-at-07-09-21.jpg" alt="BPP 03 Lantai 1 - 2" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/Y7GztMdb/Whats-App-Image-2026-05-16-at-07-09-21.jpg" alt="BPP 03 Lt1 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/WvbM2ZW6/Whats-App-Image-2026-05-16-at-07-09-20-1.jpg" alt="BPP 03 Lantai 1 - 3" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/WvbM2ZW6/Whats-App-Image-2026-05-16-at-07-09-20-1.jpg" alt="BPP 03 Lt1 3" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/VWQT5SJT/Whats-App-Image-2026-05-16-at-07-09-20.jpg" alt="BPP 03 Lantai 1 - 4" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/VWQT5SJT/Whats-App-Image-2026-05-16-at-07-09-20.jpg" alt="BPP 03 Lt1 4" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/jv6wDSKx/Whats-App-Image-2026-05-16-at-07-09-19.jpg" alt="BPP 03 Lantai 1 - 5" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/jv6wDSKx/Whats-App-Image-2026-05-16-at-07-09-19.jpg" alt="BPP 03 Lt1 5" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/1ffhNf9z/Whats-App-Image-2026-05-16-at-07-09-18.jpg" alt="BPP 03 Lantai 1 - 6" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/1ffhNf9z/Whats-App-Image-2026-05-16-at-07-09-18.jpg" alt="BPP 03 Lt1 6" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
 
-                                <!-- Label Kategori: Lantai 2 -->
-                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-slate-500 uppercase bg-slate-50 p-1.5 rounded border border-slate-100 text-center mt-1 mb-0.5">Area Lantai 2</div>
+                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-slate-400 uppercase border-b border-slate-100 pb-1 mt-2 mb-1">Lantai 2</div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/V0wZQ2TS/Whats-App-Image-2026-05-16-at-07-09-54.jpg" alt="BPP 03 Lt2 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/cKKxqFj5/Whats-App-Image-2026-05-16-at-07-09-56.jpg" alt="BPP 03 Lt2 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/3yKMbpSc/Whats-App-Image-2026-05-16-at-07-09-55.jpg" alt="BPP 03 Lt2 3" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/LXCyXfF0/Whats-App-Image-2026-05-16-at-07-09-57.jpg" alt="BPP 03 Lt2 4" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/hx809vhN/Whats-App-Image-2026-05-16-at-07-09-57-1.jpg" alt="BPP 03 Lt2 5" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/1pdSGvv/Whats-App-Image-2026-05-16-at-07-09-59.jpg" alt="BPP 03 Lt2 6" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/gFb4XWDc/Whats-App-Image-2026-05-16-at-07-09-58.jpg" alt="BPP 03 Lt2 7" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                            </div>
+                        </td>
 
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/V0wZQ2TS/Whats-App-Image-2026-05-16-at-07-09-54.jpg" alt="BPP 03 Lantai 2 - 1" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                        <!-- BPP 04 Photos -->
+                        <td class="p-4 md:p-6 border-l border-slate-100 bg-emerald-50/30">
+                            <div class="grid grid-cols-2 gap-2 md:gap-3">
+                                
+                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-emerald-600 uppercase border-b border-emerald-100 pb-1 mb-1">Parkiran</div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/QvZRSN4Z/Whats-App-Image-2026-05-29-at-13-50-14-2.jpg" alt="BPP 04 Parkir 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/cKKxqFj5/Whats-App-Image-2026-05-16-at-07-09-56.jpg" alt="BPP 03 Lantai 2 - 2" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/9k854Bhx/Whats-App-Image-2026-05-29-at-13-50-09-2.jpg" alt="BPP 04 Parkir 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/3yKMbpSc/Whats-App-Image-2026-05-16-at-07-09-55.jpg" alt="BPP 03 Lantai 2 - 3" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-[21/9] bg-slate-50"><img src="https://i.ibb.co.com/v6Z47qwf/Whats-App-Image-2026-05-29-at-13-49-47.jpg" alt="BPP 04 Parkir 3" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/LXCyXfF0/Whats-App-Image-2026-05-16-at-07-09-57.jpg" alt="BPP 03 Lantai 2 - 4" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+
+                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-emerald-600 uppercase border-b border-emerald-100 pb-1 mt-2 mb-1">Lt 1 & Basement</div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/Cp3YZVCw/Whats-App-Image-2026-05-29-at-13-50-14.jpg" alt="BPP 04 Lt1 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/hx809vhN/Whats-App-Image-2026-05-16-at-07-09-57-1.jpg" alt="BPP 03 Lantai 2 - 5" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/1YV7Dmq4/Whats-App-Image-2026-05-29-at-13-50-14-1.jpg" alt="BPP 04 Lt1 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/1pdSGvv/Whats-App-Image-2026-05-16-at-07-09-59.jpg" alt="BPP 03 Lantai 2 - 6" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/9m1FHfDX/Whats-App-Image-2026-05-29-at-13-50-12-1.jpg" alt="BPP 04 Lt1 3" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
-                                <div onclick="openLightbox(this)" class="cursor-pointer col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
-                                    <div class="relative aspect-[21/9] bg-slate-50 flex items-center justify-center">
-                                        <img src="https://i.ibb.co.com/gFb4XWDc/Whats-App-Image-2026-05-16-at-07-09-58.jpg" alt="BPP 03 Lantai 2 - 7" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <i data-lucide="zoom-in" class="w-6 h-6 text-white drop-shadow-md"></i>
-                                        </div>
-                                    </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/4R3PcCXJ/Whats-App-Image-2026-05-29-at-13-50-11-1.jpg" alt="BPP 04 Lt1 4" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
                                 </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/Xr8zSBZW/Whats-App-Image-2026-05-29-at-13-50-10.jpg" alt="BPP 04 Lt1 5" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/Y7NrPccQ/Whats-App-Image-2026-05-29-at-13-50-10-1.jpg" alt="BPP 04 Lt1 6" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/whSJzpwV/Whats-App-Image-2026-05-29-at-13-50-09.jpg" alt="BPP 04 Lt1 7" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/d0fMrpkm/Whats-App-Image-2026-05-29-at-13-50-09-1.jpg" alt="BPP 04 Lt1 8" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+
+                                <div class="col-span-2 text-[10px] md:text-xs font-bold text-emerald-600 uppercase border-b border-emerald-100 pb-1 mt-2 mb-1">Lantai 2 & 3</div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/ZRW86gB2/Whats-App-Image-2026-05-29-at-13-50-11.jpg" alt="BPP 04 Lt2 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/1fBhfVYN/Whats-App-Image-2026-05-29-at-13-50-11-2.jpg" alt="BPP 04 Lt2 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/QvQm2WbM/Whats-App-Image-2026-05-29-at-13-50-13-2.jpg" alt="BPP 04 Lt2 3" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-square bg-slate-50"><img src="https://i.ibb.co.com/g207t0q/Whats-App-Image-2026-05-29-at-13-50-12-2.jpg" alt="BPP 04 Lt2 4" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+                                <div onclick="openLightbox(this)" class="cursor-pointer col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 transition-all group">
+                                    <div class="relative aspect-[21/9] bg-slate-50"><img src="https://i.ibb.co.com/BVSSLks3/Whats-App-Image-2026-05-29-at-13-50-10-2.jpg" alt="BPP 04 Lt2 5" class="w-full h-full object-cover"><div class="absolute inset-0 bg-indigo-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><i data-lucide="zoom-in" class="w-5 h-5 text-white"></i></div></div>
+                                </div>
+
                             </div>
                         </td>
                     </tr>
+
                 </tbody>
             </table>
         </div>
@@ -511,65 +534,54 @@
 
     <!-- Lightbox Modal -->
     <div id="lightbox-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/95 backdrop-blur-sm opacity-0 transition-opacity duration-300 cursor-zoom-out" onclick="closeLightbox()">
-        
-        <!-- Close Button -->
         <button onclick="closeLightbox()" class="absolute top-4 right-4 md:top-6 md:right-6 p-2.5 text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all focus:outline-none">
             <i data-lucide="x" class="w-6 h-6"></i>
         </button>
-        
-        <!-- Image Container -->
         <div class="relative w-full h-full p-4 md:p-12 flex flex-col items-center justify-center">
             <img id="lightbox-img" src="" alt="View Fullscreen" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl scale-90 opacity-0 transition-all duration-300 ease-out cursor-default" onclick="event.stopPropagation()">
         </div>
     </div>
 
-    <!-- Inisialisasi Icon Lucide -->
+    <!-- Inisialisasi Script -->
     <script>
-        lucide.createIcons();
+        const initIcons = () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        };
 
-        // Logika Lightbox
+        document.addEventListener("DOMContentLoaded", initIcons);
+        window.addEventListener("load", initIcons);
+        if (typeof lucide !== 'undefined') initIcons();
+
+        // Lightbox Logic
         const modal = document.getElementById('lightbox-modal');
         const modalImg = document.getElementById('lightbox-img');
 
         function openLightbox(element) {
-            // Ambil URL gambar dari elemen yang diklik
             const imgSrc = element.querySelector('img').src;
-            
-            // Set URL gambar ke modal
             modalImg.src = imgSrc;
-            
-            // Tampilkan modal (hapus display hidden)
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            
-            // Trigger reflow browser agar transisi CSS berjalan
             void modal.offsetWidth; 
-            
-            // Animasi membesar dan muncul
             modal.classList.remove('opacity-0');
             modalImg.classList.remove('scale-90', 'opacity-0');
             modalImg.classList.add('scale-100', 'opacity-100');
-            
-            // Nonaktifkan scroll pada body saat popup terbuka
             document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
-            // Animasi mengecil dan memudar
             modal.classList.add('opacity-0');
             modalImg.classList.remove('scale-100', 'opacity-100');
             modalImg.classList.add('scale-90', 'opacity-0');
-            
-            // Tunggu animasi selesai lalu sembunyikan (display hidden)
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-                modalImg.src = ''; // Bersihkan gambar
-                document.body.style.overflow = 'auto'; // Kembalikan scroll body
+                modalImg.src = '';
+                document.body.style.overflow = 'auto';
             }, 300);
         }
 
-        // Tutup otomatis saat tombol ESC ditekan
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
                 closeLightbox();
