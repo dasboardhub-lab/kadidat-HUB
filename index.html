@@ -3,274 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Komprehensif Kandidat Hub</title>
+    <title>Perbandingan Kandidat Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
         }
-        .table-row-hover:hover td {
-            background-color: #fafafa;
+        
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        .glass-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f8fafc; 
         }
-        /* Custom scrollbar for better look on windows/linux */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1; 
             border-radius: 4px;
         }
-        ::-webkit-scrollbar-thumb:hover {
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; 
+        }
+
+        /* Sticky Table Configuration */
+        .sticky-corner {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .sticky-col {
+            position: sticky;
+            left: 0;
+            z-index: 30;
+            background-color: #ffffff;
+        }
+        
+        /* Box Shadows for Sticky Elements to act as borders */
+        .shadow-right { box-shadow: inset -1px 0 0 0 #e2e8f0; }
+        .shadow-bottom { box-shadow: inset 0 -1px 0 0 #e2e8f0; }
+        .shadow-corner { box-shadow: inset -1px -1px 0 0 #e2e8f0; }
+        
+        /* Hover effects */
+        .table-row-hover:hover td {
+            background-color: #f8fafc !important; /* slate-50 */
+            transition: background-color 0.15s ease;
         }
     </style>
 </head>
-<body class="text-slate-800 p-4 md:p-8 min-h-screen flex items-center justify-center">
+<body class="p-2 md:p-6 lg:p-8 h-screen w-full flex items-center justify-center overflow-hidden">
 
-    <div class="max-w-[1400px] w-full mx-auto bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden flex flex-col">
+    <!-- Main Application Container -->
+    <div class="w-full max-w-[1300px] h-full max-h-[95vh] bg-white rounded-xl md:rounded-2xl shadow-xl border border-slate-200 flex flex-col overflow-hidden">
         
-        <!-- Header Section -->
-        <div class="p-8 md:px-12 md:py-10 bg-white relative z-10">
-            <div class="absolute inset-0 bg-gradient-to-r from-slate-50 to-white -z-10"></div>
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-center space-x-4">
-                    <div class="p-4 bg-indigo-50 text-indigo-600 rounded-2xl ring-1 ring-inset ring-indigo-100">
-                        <i data-lucide="building-2" class="w-8 h-8"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Data Perbandingan Hub</h1>
-                        <p class="text-slate-500 font-medium mt-1">Rekapitulasi lengkap form skoring seleksi fasilitas Balikpapan</p>
-                    </div>
+        <!-- App Header (Fixed) -->
+        <div class="p-4 md:p-5 bg-white border-b border-slate-200 shrink-0 flex items-center justify-between z-10 relative">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg md:rounded-xl ring-1 ring-indigo-100">
+                    <i data-lucide="building-2" class="w-5 h-5 md:w-6 md:h-6"></i>
                 </div>
-                <div class="flex items-center space-x-2 text-sm font-medium text-slate-400 bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
-                    <i data-lucide="info" class="w-4 h-4"></i>
-                    <span>Diperbarui dari data lapangan terbaru</span>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold text-slate-900 tracking-tight leading-tight">Perbandingan Hub Balikpapan</h1>
+                    <p class="text-xs md:text-sm text-slate-500 font-medium">Rekapitulasi skoring fasilitas logistik</p>
                 </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-1.5 text-xs font-medium text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
+                <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
+                <span>Data Lapangan Terkini</span>
             </div>
         </div>
 
-        <!-- Table Section -->
-        <div class="overflow-x-auto relative z-0">
-            <table class="w-full text-left border-collapse min-w-[1100px]">
-                <thead class="glass-header sticky top-0 z-20 shadow-sm border-y border-slate-200">
+        <!-- Scrollable Table Viewport -->
+        <div class="flex-1 overflow-auto custom-scrollbar bg-white relative">
+            <table class="w-full text-left border-collapse min-w-[800px] md:min-w-[1000px] text-[13px] md:text-sm">
+                
+                <!-- Table Headers (Sticky Top) -->
+                <thead>
                     <tr>
-                        <th class="p-6 font-bold text-slate-400 uppercase tracking-widest text-xs w-[22%] align-bottom">
-                            Kriteria Penilaian
+                        <th class="sticky-corner shadow-corner p-3 md:p-4 align-bottom w-[25%]">
+                            <span class="block font-bold text-slate-400 uppercase tracking-widest text-[10px] md:text-xs">Kriteria Penilaian</span>
                         </th>
-                        <th class="p-6 w-[26%] border-l border-slate-100">
-                            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center ring-1 ring-slate-900/5 transition-transform hover:-translate-y-1 hover:shadow-md">
-                                <span class="block text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">HUB BPP 01</span>
-                                <span class="block text-sm font-medium text-slate-500 mt-2">Jl. Siaga No. 116</span>
+                        <th class="sticky-header shadow-bottom p-3 md:p-4 border-l border-slate-200 w-[25%]">
+                            <div class="bg-white rounded-lg p-3 border border-slate-200 shadow-sm text-center">
+                                <span class="block text-base md:text-lg font-black text-slate-800">HUB BPP 01</span>
+                                <span class="block text-[11px] md:text-xs font-medium text-slate-500 mt-0.5">Jl. Siaga No. 116</span>
                             </div>
                         </th>
-                        <th class="p-6 w-[26%] border-l border-slate-100">
-                            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center ring-1 ring-slate-900/5 transition-transform hover:-translate-y-1 hover:shadow-md">
-                                <span class="block text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">HUB BPP 02</span>
-                                <span class="block text-sm font-medium text-slate-500 mt-2">Jl. Mayjend Sutoyo No. 9</span>
+                        <th class="sticky-header shadow-bottom p-3 md:p-4 border-l border-slate-200 w-[25%]">
+                            <div class="bg-white rounded-lg p-3 border border-slate-200 shadow-sm text-center">
+                                <span class="block text-base md:text-lg font-black text-slate-800">HUB BPP 02</span>
+                                <span class="block text-[11px] md:text-xs font-medium text-slate-500 mt-0.5">Jl. M. Sutoyo No. 9</span>
                             </div>
                         </th>
-                        <th class="p-6 w-[26%] border-l border-slate-100">
-                            <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center ring-1 ring-slate-900/5 transition-transform hover:-translate-y-1 hover:shadow-md">
-                                <span class="block text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">HUB BPP 03</span>
-                                <span class="block text-sm font-medium text-slate-500 mt-2">Jl. Syarifuddin Yoes 18</span>
+                        <th class="sticky-header shadow-bottom p-3 md:p-4 border-l border-slate-200 w-[25%]">
+                            <div class="bg-white rounded-lg p-3 border-emerald-200 ring-1 ring-emerald-50 shadow-sm text-center bg-emerald-50/20">
+                                <span class="block text-base md:text-lg font-black text-slate-800">HUB BPP 03</span>
+                                <span class="block text-[11px] md:text-xs font-medium text-slate-500 mt-0.5">Jl. Syarifuddin Yoes 18</span>
                             </div>
                         </th>
                     </tr>
                 </thead>
-                <tbody class="text-sm text-slate-700 divide-y divide-slate-100">
+
+                <!-- Table Body -->
+                <tbody class="text-slate-700 divide-y divide-slate-100">
                     
                     <!-- Kategori 1: Finansial & Luas -->
-                    <tr class="bg-slate-50/50">
-                        <td colspan="4" class="px-6 py-4 font-bold text-slate-800 text-xs tracking-widest uppercase">
-                            <div class="flex items-center"><i data-lucide="wallet" class="w-4 h-4 mr-2 text-indigo-500"></i> Finansial & Luas Area</div>
+                    <tr class="bg-slate-100/70">
+                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase">
+                            <div class="flex items-center"><i data-lucide="wallet" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Finansial & Luas Area</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="banknote" class="w-4 h-4 mr-3 text-slate-400"></i> Harga Sewa / Tahun</td>
-                        <td class="p-6 font-bold text-lg border-l border-slate-100 text-slate-900">Rp 120.000.000</td>
-                        <td class="p-6 font-bold text-lg border-l border-slate-100 text-slate-900">Rp 125.000.000</td>
-                        <td class="p-6 font-bold text-lg border-l border-slate-100 text-slate-900">Rp 185.000.000</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="banknote" class="w-4 h-4 mr-2.5 text-slate-400"></i> Harga Sewa / Tahun</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-slate-900 bg-white">Rp 120 Juta</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-slate-900 bg-white">Rp 125 Juta</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-slate-900 bg-white">Rp 185 Juta</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="maximize" class="w-4 h-4 mr-3 text-slate-400"></i> Luas Area Operasional</td>
-                        <td class="p-6 border-l border-slate-100 font-medium">116 m²</td>
-                        <td class="p-6 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">204 m²</td>
-                        <td class="p-6 border-l border-slate-100 font-medium">152 m²</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="maximize" class="w-4 h-4 mr-2.5 text-slate-400"></i> Luas Area Operasional</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">116 m²</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">204 m²</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">152 m²</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="car" class="w-4 h-4 mr-3 text-slate-400"></i> Luas Parkiran</td>
-                        <td class="p-6 border-l border-slate-100 font-medium">36 m²</td>
-                        <td class="p-6 border-l border-slate-100 font-medium text-rose-600 bg-rose-50/30">0 m²</td>
-                        <td class="p-6 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">95 m²</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="car" class="w-4 h-4 mr-2.5 text-slate-400"></i> Luas Parkiran</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">36 m²</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-rose-600 bg-rose-50/30">0 m²</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-bold text-indigo-700 bg-indigo-50/50">95 m²</td>
                     </tr>
 
                     <!-- Kategori 2: Akses & Operasional -->
-                    <tr class="bg-slate-50/50">
-                        <td colspan="4" class="px-6 py-4 font-bold text-slate-800 text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="route" class="w-4 h-4 mr-2 text-indigo-500"></i> Akses & Operasional Logistik</div>
+                    <tr class="bg-slate-100/70">
+                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="route" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Akses & Logistik</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="map" class="w-4 h-4 mr-3 text-slate-400"></i> Akses Jalan Depan</td>
-                        <td class="p-6 border-l border-slate-100">1 gang setelah jalan utama</td>
-                        <td class="p-6 border-l border-slate-100">1 gang setelah jalan utama</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">Jalan utama dekat tol (< 5min)</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="map" class="w-4 h-4 mr-2.5 text-slate-400"></i> Akses Jalan Depan</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1 gang dari jln utama</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1 gang dari jln utama</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-semibold text-slate-900 bg-white">Jln utama dekat tol</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="truck" class="w-4 h-4 mr-3 text-slate-400"></i> Kapasitas Parkir Armada</td>
-                        <td class="p-6 border-l border-slate-100">< 10 CDE</td>
-                        <td class="p-6 border-l border-slate-100 text-rose-600 font-medium">Tidak ada (0)</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">> 10 CDE</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="truck" class="w-4 h-4 mr-2.5 text-slate-400"></i> Kapasitas Armada</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">< 10 CDE</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 text-rose-600 font-medium bg-white">0 (Tidak ada)</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 10 CDE</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="box" class="w-4 h-4 mr-3 text-slate-400"></i> Area Bongkar Muat</td>
-                        <td class="p-6 border-l border-slate-100">1-2 gate untuk mobil</td>
-                        <td class="p-6 border-l border-slate-100">1-2 gate untuk mobil</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">> 2 gates untuk mobil & docking</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="box" class="w-4 h-4 mr-2.5 text-slate-400"></i> Loading/Unloading</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1-2 gate mobil</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1-2 gate mobil</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-semibold text-slate-900 bg-white">> 2 gate & docking</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="arrow-left-right" class="w-4 h-4 mr-3 text-slate-400"></i> Lebar Akses Premises</td>
-                        <td class="p-6 border-l border-slate-100 text-rose-600 font-medium">1-2 Meter</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">> 8 Meter</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">> 8 Meter</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="arrow-left-right" class="w-4 h-4 mr-2.5 text-slate-400"></i> Akses Area & Bangunan</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 text-rose-600 bg-white">Sempit (1-2m / 70cm)</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">> 8m Area, > 2m Pintu</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">> 8m Area, > 2m Pintu</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="door-open" class="w-4 h-4 mr-3 text-slate-400"></i> Lebar Akses Bangunan</td>
-                        <td class="p-6 border-l border-slate-100 text-rose-600 font-medium">70-90 cm (pintu rumah)</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">> 2 Meter</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-slate-900">> 2 Meter</td>
-                    </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="clock" class="w-4 h-4 mr-3 text-slate-400"></i> Jam Operasional</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-emerald-600">24 Jam Bebas Akses</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-emerald-600">24 Jam Bebas Akses</td>
-                        <td class="p-6 border-l border-slate-100 text-amber-600 font-medium">Terbatas (Ada portal area)</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="clock" class="w-4 h-4 mr-2.5 text-slate-400"></i> Jam Operasional</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">24 Jam (Bebas)</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">24 Jam (Bebas)</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 text-amber-600 bg-white">Terbatas (Portal)</td>
                     </tr>
 
-                    <!-- Kategori 3: Fasilitas & Kondisi Fisik -->
-                    <tr class="bg-slate-50/50">
-                        <td colspan="4" class="px-6 py-4 font-bold text-slate-800 text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="home" class="w-4 h-4 mr-2 text-indigo-500"></i> Fasilitas & Kondisi Fisik</div>
+                    <!-- Kategori 3: Fasilitas & Fisik -->
+                    <tr class="bg-slate-100/70">
+                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="home" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Fasilitas Fisik</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="layout-grid" class="w-4 h-4 mr-3 text-slate-400"></i> Jenis & Sekat Bangunan</td>
-                        <td class="p-6 border-l border-slate-100">Rumah <br><span class="text-rose-600 text-xs font-semibold mt-1 block">Banyak Sekat</span></td>
-                        <td class="p-6 border-l border-slate-100">Gudang <br><span class="text-emerald-600 text-xs font-semibold mt-1 block">Tanpa Sekat</span></td>
-                        <td class="p-6 border-l border-slate-100">Gudang <br><span class="text-emerald-600 text-xs font-semibold mt-1 block">Tanpa Sekat</span></td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="layout-grid" class="w-4 h-4 mr-2.5 text-slate-400"></i> Jenis & Sekat Bangunan</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Rumah <span class="text-rose-500 font-medium block">Banyak Sekat</span></td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Gudang <span class="text-emerald-500 font-medium block">Tanpa Sekat</span></td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Gudang <span class="text-emerald-500 font-medium block">Tanpa Sekat</span></td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="hammer" class="w-4 h-4 mr-3 text-slate-400"></i> Status Kelayakan</td>
-                        <td class="p-6 border-l border-slate-100">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="hammer" class="w-4 h-4 mr-2.5 text-slate-400"></i> Kebutuhan Renovasi</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Renovasi Minor</span>
                         </td>
-                        <td class="p-6 border-l border-slate-100">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20">Renovasi Besar</span>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20">Renovasi Besar</span>
                         </td>
-                        <td class="p-6 border-l border-slate-100">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Siap Digunakan</span>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Siap Digunakan</span>
                         </td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="zap" class="w-4 h-4 mr-3 text-slate-400"></i> Kapasitas Listrik</td>
-                        <td class="p-6 border-l border-slate-100 text-rose-600 font-medium">Pasang Baru (Kondisi gabung)</td>
-                        <td class="p-6 border-l border-slate-100 font-medium">1.300 Watt</td>
-                        <td class="p-6 border-l border-slate-100 font-bold text-indigo-600">5.500 Watt</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="zap" class="w-4 h-4 mr-2.5 text-slate-400"></i> Listrik & Air</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Pasang Baru (Listrik)<br><span class="text-slate-500 text-[11px]">PDAM Sharing</span></td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">1.300 Watt<br><span class="text-slate-500 text-[11px]">PDAM Sharing</span></td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium bg-white">5.500 Watt<br><span class="text-slate-500 text-[11px]">Mandiri</span></td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="droplet" class="w-4 h-4 mr-3 text-slate-400"></i> Sumber Air (PDAM)</td>
-                        <td class="p-6 border-l border-slate-100">Sharing dengan lantai 2</td>
-                        <td class="p-6 border-l border-slate-100">Sharing dengan toko sebelah</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-emerald-600">Instalasi Mandiri</td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="bath" class="w-4 h-4 mr-2.5 text-slate-400"></i> Kondisi Toilet</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">Kondisi Baik</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 text-rose-600 font-medium bg-white">Rusak (Perlu Perbaikan)</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 font-medium text-emerald-600 bg-white">Kondisi Baik</td>
                     </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="bath" class="w-4 h-4 mr-3 text-slate-400"></i> Kondisi Toilet</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-emerald-600">Kondisi Baik</td>
-                        <td class="p-6 border-l border-slate-100 text-rose-600 font-medium">Rusak (Perlu Perbaikan Besar)</td>
-                        <td class="p-6 border-l border-slate-100 font-semibold text-emerald-600">Kondisi Baik</td>
-                    </tr>
-                    <tr class="table-row-hover transition-colors group">
-                        <td class="p-6 font-medium text-slate-500 flex items-center group-hover:text-slate-800 transition-colors"><i data-lucide="shield-alert" class="w-4 h-4 mr-3 text-slate-400"></i> Risiko Eksternal</td>
-                        <td class="p-6 border-l border-slate-100 space-y-2">
-                            <div class="flex items-center text-emerald-600 text-xs font-bold"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1.5"></i> Bebas Banjir</div>
-                            <div class="flex items-center text-amber-600 text-xs font-bold"><i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1.5"></i> Ormas Tentatif</div>
-                        </td>
-                        <td class="p-6 border-l border-slate-100 space-y-2">
-                            <div class="flex items-center text-emerald-600 text-xs font-bold"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1.5"></i> Bebas Banjir</div>
-                            <div class="flex items-center text-amber-600 text-xs font-bold"><i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1.5"></i> Ormas Tentatif</div>
-                        </td>
-                        <td class="p-6 border-l border-slate-100 space-y-2">
-                            <div class="flex items-center text-emerald-600 text-xs font-bold"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1.5"></i> Bebas Banjir</div>
-                            <div class="flex items-center text-amber-600 text-xs font-bold"><i data-lucide="alert-circle" class="w-3.5 h-3.5 mr-1.5"></i> Ormas Tentatif</div>
-                        </td>
+                    <tr class="table-row-hover group">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 flex items-center bg-white"><i data-lucide="shield-alert" class="w-4 h-4 mr-2.5 text-slate-400"></i> Eksternal (Ormas/Banjir)</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Bebas Banjir, <span class="text-amber-600 font-medium">Ormas Tentatif</span></td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Bebas Banjir, <span class="text-amber-600 font-medium">Ormas Tentatif</span></td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">Bebas Banjir, <span class="text-amber-600 font-medium">Ormas Tentatif</span></td>
                     </tr>
 
                     <!-- Kategori 4: Catatan Khusus -->
-                    <tr class="bg-slate-50/50">
-                        <td colspan="4" class="px-6 py-4 font-bold text-slate-800 text-xs tracking-widest uppercase border-t border-slate-200">
-                            <div class="flex items-center"><i data-lucide="file-text" class="w-4 h-4 mr-2 text-indigo-500"></i> Catatan Khusus Lapangan</div>
+                    <tr class="bg-slate-100/70">
+                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="file-text" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Catatan Observasi</div>
                         </td>
                     </tr>
-                    <tr class="table-row-hover align-top transition-colors bg-white">
-                        <td class="p-6 font-medium text-slate-500">Hasil Observasi</td>
-                        <td class="p-6 border-l border-slate-100">
-                            <ul class="space-y-4">
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-amber-100 text-amber-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="pickaxe" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed">Area parkir terlalu tinggi, butuh pembobokan untuk akses unit (ditanggung owner jika deal).</span>
-                                </li>
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-amber-100 text-amber-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="git-merge" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed">Sulit gabung SS GNBH, selisih ukuran area hanya 2 meter.</span>
-                                </li>
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-rose-100 text-rose-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="ban" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed font-medium">Unit ASTA tidak bisa parkir.</span>
-                                </li>
+                    <tr class="table-row-hover align-top bg-white">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 bg-white">Hasil Survey Lapangan</td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <ul class="space-y-2.5 text-[12px] text-slate-600">
+                                <li class="flex items-start"><i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-500 mt-0.5 mr-2 shrink-0"></i>Area parkir terlalu tinggi, butuh pembobokan.</li>
+                                <li class="flex items-start"><i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-500 mt-0.5 mr-2 shrink-0"></i>Sulit digabung dgn SS GNBH.</li>
+                                <li class="flex items-start text-rose-600 font-medium"><i data-lucide="ban" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Unit ASTA tidak bisa parkir.</li>
                             </ul>
                         </td>
-                        <td class="p-6 border-l border-slate-100">
-                            <ul class="space-y-4">
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-amber-100 text-amber-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="droplet" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed">Ada titik atap bocor & perlu penyesuaian besar untuk alur loading.</span>
-                                </li>
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-emerald-100 text-emerald-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed font-medium">Bisa digabungkan dengan SS GNBH.</span>
-                                </li>
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-rose-100 text-rose-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="ban" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed font-medium">Unit ASTA sama sekali tidak bisa parkir.</span>
-                                </li>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <ul class="space-y-2.5 text-[12px] text-slate-600">
+                                <li class="flex items-start"><i data-lucide="droplet" class="w-3.5 h-3.5 text-amber-500 mt-0.5 mr-2 shrink-0"></i>Ada atap bocor & butuh penyesuaian alur loading.</li>
+                                <li class="flex items-start text-emerald-600 font-medium"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Bisa digabungkan dgn SS GNBH.</li>
+                                <li class="flex items-start text-rose-600 font-medium"><i data-lucide="ban" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Unit ASTA tidak bisa parkir.</li>
                             </ul>
                         </td>
-                        <td class="p-6 border-l border-slate-100 bg-slate-50/30">
-                            <ul class="space-y-4">
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-emerald-100 text-emerald-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                                    <span class="leading-relaxed font-medium">Sangat ideal digabung dengan SS GNBHO.</span>
-                                </li>
-                                <li class="flex items-start text-slate-600">
-                                    <div class="bg-indigo-100 text-indigo-600 p-1 rounded mt-0.5 mr-3 shrink-0"><i class="w-3.5 h-3.5" data-lucide="info"></i></div>
-                                    <span class="leading-relaxed">Lantai 3 beroperasi sebagai kos-kosan, namun memiliki akses pintu terpisah di luar area gudang.</span>
-                                </li>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <ul class="space-y-2.5 text-[12px] text-slate-600">
+                                <li class="flex items-start text-emerald-600 font-medium"><i data-lucide="check" class="w-3.5 h-3.5 mt-0.5 mr-2 shrink-0"></i>Sangat ideal digabung dgn SS GNBHO.</li>
+                                <li class="flex items-start"><i data-lucide="info" class="w-3.5 h-3.5 text-blue-500 mt-0.5 mr-2 shrink-0"></i>Lantai 3 adalah kos-kosan, namun akses pintu terpisah di luar area.</li>
                             </ul>
                         </td>
                     </tr>
 
+                    <!-- Kategori 5: Dokumentasi Foto -->
+                    <tr class="bg-slate-100/70">
+                        <td colspan="4" class="sticky left-0 z-20 px-4 py-2.5 font-bold text-slate-800 text-[10px] md:text-xs tracking-widest uppercase border-t border-slate-200">
+                            <div class="flex items-center"><i data-lucide="image" class="w-3.5 h-3.5 mr-2 text-indigo-500"></i> Dokumentasi Lapangan</div>
+                        </td>
+                    </tr>
+                    <tr class="table-row-hover align-top bg-white">
+                        <td class="sticky-col shadow-right p-3 md:p-4 font-medium text-slate-600 bg-white">
+                            <div class="flex items-center"><i data-lucide="camera" class="w-4 h-4 mr-2.5 text-slate-400"></i> Lampiran Foto</div>
+                            <span class="block text-[10px] text-slate-400 mt-1.5 font-normal leading-relaxed">*Klik thumbnail untuk melihat gambar aslinya di tab baru.</span>
+                        </td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-white">
+                            <div class="grid grid-cols-2 gap-2">
+                                <a href="https://ibb.co.com/fVwxzmcC" target="_blank" class="block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/300x200/f8fafc/64748b?text=Foto+1" alt="Foto 1" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="https://ibb.co.com/FqckHYnM" target="_blank" class="block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/300x200/f8fafc/64748b?text=Foto+2" alt="Foto 2" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="https://ibb.co.com/fzCmBpyz" target="_blank" class="block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/300x200/f8fafc/64748b?text=Foto+3" alt="Foto 3" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="https://ibb.co.com/4ZZX45pG" target="_blank" class="block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/300x200/f8fafc/64748b?text=Foto+4" alt="Foto 4" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="https://ibb.co.com/93GYVL9h" target="_blank" class="block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/300x200/f8fafc/64748b?text=Foto+5" alt="Foto 5" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="https://ibb.co.com/gMvZKXyD" target="_blank" class="block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-video bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/300x200/f8fafc/64748b?text=Foto+6" alt="Foto 6" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="https://ibb.co.com/gMYQrNr7" target="_blank" class="col-span-2 block rounded-lg overflow-hidden border border-slate-200 hover:ring-2 hover:ring-indigo-500 hover:shadow-md transition-all group">
+                                    <div class="relative aspect-[21/9] bg-slate-50 flex items-center justify-center">
+                                        <img src="https://placehold.co/600x200/f8fafc/64748b?text=Foto+7" alt="Foto 7" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-indigo-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <i data-lucide="external-link" class="w-5 h-5 text-indigo-700 bg-white/90 p-1 rounded-full shadow-sm"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-slate-50/50 text-center align-middle text-slate-400 text-[11px] md:text-xs italic">
+                            Belum ada dokumentasi
+                        </td>
+                        <td class="p-3 md:p-4 border-l border-slate-100 bg-slate-50/50 text-center align-middle text-slate-400 text-[11px] md:text-xs italic">
+                            Belum ada dokumentasi
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
